@@ -16,6 +16,16 @@ const verifyToken = (req, res , next) => {
     }
 };
 
+const verifyAdmin = (req, res, next) => {
+    verifyToken(req, res , () => {
+        if(req.user.isAdmin) {
+            next();
+        } else {
+            return res.status(500).send('User is not admin so user cant be deleted')
+        }
+    })
+};
+
 module.exports = {
-    verifyToken, 
+    verifyToken, verifyAdmin,
 }
