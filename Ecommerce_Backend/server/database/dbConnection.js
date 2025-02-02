@@ -8,7 +8,7 @@ const dbConnect = () => {
         console.log("database connected sucessfully");
         
     } catch (err) {
-        console.log(err);
+        console.error("DataBase connection failed")
     }
 };
 

@@ -1,13 +1,17 @@
+const dotenv = require("dotenv");
+dotenv.config();
+
 const express = require("express"); //imopting express to write the restful Api
 const app = express();
 const routes = require("./routes/routes.js");
 const dbConnect = require("./database/dbConnection.js");
-const dotenv = require("dotenv");
-dotenv.config();
+const cors = require('cors');
 
 //middlewares
 app.use(express.json());
+app.use(cors());
 
+//Api routes
 app.use("/", routes);
 
 app.get("/" , (req,res) => {

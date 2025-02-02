@@ -2,16 +2,16 @@
 const router = require("express").Router();
 
 //importing the user route 
-const userRoute = require("./user.route.js");
 const authRoute = require("./auth.route.js");
+const productRoute = require("./product.route.js");
 
 //creating a base url
-const base = "/api/v1";
+const base = "/api";
 
 
-router.use(`${base}/users`, userRoute);
+//All api routes
 router.use(`${base}/auth`, authRoute);
-
+router.use(`${base}/product`, productRoute);
 
 //exporing the module
 module.exports = router;
