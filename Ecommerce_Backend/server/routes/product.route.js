@@ -2,7 +2,7 @@ const router = require("express").Router();
 const { protect, admin} = require('../middlewares/auth.middleware.js');
 const Product = require('../models/product.model.js');
 
-// @route POST /api/products @access-ADMIN
+// @route -POST /api/products @access-ADMIN
 
 router.post("/", protect, admin, async(req, res) => {
     try {
@@ -117,7 +117,7 @@ router.get("/", async(req, res) => {
             material,
             brand,
             limit
-        } = req.query;
+        } = req.query; 
 
         let query = {};
 
@@ -152,8 +152,8 @@ router.get("/", async(req, res) => {
 
         if(minPrice || maxPrice) {
             query.price = {};
-            if(minPrice) query.price.gte = Number(minPrice);
-            if(maxPrice) query.price.lte = Number(maxPrice);
+            if(minPrice) query.price.$gte = Number(minPrice);
+            if(maxPrice) query.price.$lte = Number(maxPrice);
         }
 
         if(search) {
@@ -163,6 +163,8 @@ router.get("/", async(req, res) => {
             ]
         }
 
+        //Sorting --
+        let sort = {};
         if(sortBy) {
             switch (sortBy) {
                 case "priceAsc":
@@ -187,6 +189,22 @@ router.get("/", async(req, res) => {
     } catch (error) {
         console.error(error);
         res.status(500).send('Server Error');
+    }
+});
+
+//getting a single product by its id @access - Public
+
+router.get('/:id', async (req, res) => {
+    try {
+        const product = await Product.findById(req.params.id);
+        if(product) {
+            res.json(product);
+        } else {
+            res.status(404).json({message : 'Product Not Found'});
+        }
+    } catch (error) {
+        console.error(error)
+        res.status(500).send("Server Error");
     }
 })
 
